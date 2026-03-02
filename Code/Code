@@ -8,8 +8,6 @@ const int ENB = 3;  // Right motor speed
 
 void setup() {
   Serial.begin(115200);
-  
-  // Set all pins as outputs
   pinMode(ENA, OUTPUT);
   pinMode(ENB, OUTPUT);
   pinMode(IN1, OUTPUT);
@@ -21,71 +19,55 @@ void setup() {
   Serial.println("TANK READY - Type F, B, L, R, S + ENTER");
 }
 
-// === TANK MOVEMENTS ===
+// === FIXED MOVEMENTS ===
 void tankForward() {
-  digitalWrite(IN1, HIGH);
-  digitalWrite(IN2, LOW);
-  digitalWrite(IN3, HIGH);
-  digitalWrite(IN4, LOW);
-  analogWrite(ENA, 200);  // Speed 200/255
-  analogWrite(ENB, 200);
+  digitalWrite(IN1, HIGH); digitalWrite(IN2, LOW);   // Left forward
+  digitalWrite(IN3, HIGH); digitalWrite(IN4, LOW);   // Right forward
+  analogWrite(ENA, 200); analogWrite(ENB, 200);
   Serial.println("FORWARD");
 }
 
 void tankBackward() {
-  digitalWrite(IN1, LOW);
-  digitalWrite(IN2, HIGH);
-  digitalWrite(IN3, LOW);
-  digitalWrite(IN4, HIGH);
-  analogWrite(ENA, 200);
-  analogWrite(ENB, 200);
+  digitalWrite(IN1, LOW);  digitalWrite(IN2, HIGH);  // Left backward
+  digitalWrite(IN3, LOW);  digitalWrite(IN4, HIGH);  // Right backward
+  analogWrite(ENA, 200); analogWrite(ENB, 200);
   Serial.println("BACKWARD");
 }
 
+// FIXED: Left command now does RIGHT turn
 void tankLeft() {
-  // Left track back, right forward = turn left
-  digitalWrite(IN1, LOW);
-  digitalWrite(IN2, HIGH);
-  digitalWrite(IN3, HIGH);
-  digitalWrite(IN4, LOW);
-  analogWrite(ENA, 150);
-  analogWrite(ENB, 150);
-  Serial.println("LEFT");
+  digitalWrite(IN1, HIGH); digitalWrite(IN2, LOW);   // Left FORWARD  
+  digitalWrite(IN3, LOW);  digitalWrite(IN4, HIGH);  // Right BACKWARD
+  analogWrite(ENA, 150); analogWrite(ENB, 150);
+  Serial.println("RIGHT");  // Now turns RIGHT when you type L
 }
 
+// FIXED: Right command now does LEFT turn  
 void tankRight() {
-  // Left forward, right back = turn right
-  digitalWrite(IN1, HIGH);
-  digitalWrite(IN2, LOW);
-  digitalWrite(IN3, LOW);
-  digitalWrite(IN4, HIGH);
-  analogWrite(ENA, 150);
-  analogWrite(ENB, 150);
-  Serial.println("RIGHT");
+  digitalWrite(IN1, LOW);  digitalWrite(IN2, HIGH);  // Left BACKWARD
+  digitalWrite(IN3, HIGH); digitalWrite(IN4, LOW);   // Right FORWARD
+  analogWrite(ENA, 150); analogWrite(ENB, 150);
+  Serial.println("LEFT");   // Now turns LEFT when you type R
 }
 
 void stopTank() {
-  digitalWrite(IN1, LOW);
-  digitalWrite(IN2, LOW);
-  digitalWrite(IN3, LOW);
-  digitalWrite(IN4, LOW);
-  analogWrite(ENA, 0);
-  analogWrite(ENB, 0);
+  digitalWrite(IN1, LOW); digitalWrite(IN2, LOW);
+  digitalWrite(IN3, LOW); digitalWrite(IN4, LOW);
+  analogWrite(ENA, 0); analogWrite(ENB, 0);
   Serial.println("STOP");
 }
 
-// === SERIAL COMMAND PARSER ===
 void loop() {
   if (Serial.available() > 0) {
-    char cmd = Serial.read();  // Read single character
+    char cmd = Serial.read();
     
     switch (cmd) {
       case 'F': case 'f': tankForward(); break;
       case 'B': case 'b': tankBackward(); break;
-      case 'L': case 'l': tankLeft(); break;
-      case 'R': case 'r': tankRight(); break;
+      case 'L': case 'l': tankLeft(); break;     // L = RIGHT turn
+      case 'R': case 'r': tankRight(); break;    // R = LEFT turn
       case 'S': case 's': stopTank(); break;
-      default: Serial.println("Unknown: " + String(cmd)); break;
+      default: break;
     }
   }
 }
