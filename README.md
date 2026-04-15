@@ -34,7 +34,7 @@ Output Display: We used an LED Screen and LEDs to show the tank's status and pro
 We designed the tank to be responsive and fun to drive. The ESP32 handles the wireless communication while the Arduino manages the motors and sensors. By combining the 393 motors for power and servos for precision, we were able to create a scale model that mimics a real-life tank's functionality.
 
 ## Key Features
-=============
+
 Functional Turret: Uses servos so you can aim and rotate just like a real tank.
 
 Dual-Controller Setup: Using both an Arduino and an ESP32 lets us handle more tasks at once.
