@@ -5,6 +5,7 @@ Our project is to be remote controlled and function effectively, integrating all
 
 
 Requirements:
+
 Project is to contain at least ine functional element from each of the 5 sections: Output Display, Manual User Input, Automatic Sensors, Mechanisms, Actuators & Hardware, and Logic, Processing, & Control. 
 
 
