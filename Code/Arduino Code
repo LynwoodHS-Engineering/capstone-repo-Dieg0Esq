@@ -1,0 +1,173 @@
+#include <LiquidCrystal.h>
+#include <Servo.h>
+
+// LCD
+LiquidCrystal lcd(12, 11, 10, 9, 8, 7);
+
+// Servo
+Servo turretServo;
+
+// ENCODER
+volatile long encoderCount = 0;
+const int encoderA = 2;
+const int encoderB = 6;
+
+// DRIVETRAIN L298N
+const int ENA = 9;
+const int IN1 = 8;
+const int IN2 = 7;
+const int IN3 = 5;
+const int IN4 = 4;
+const int ENB = 3;
+
+// TURRET MOTOR L298N
+const int TURRET_EN = 10;
+const int TURRET_IN1 = 11;
+const int TURRET_IN2 = 12;
+
+// PUNCHER MOTOR
+const int PUNCH_EN = A1;
+const int PUNCH_IN1 = 13;
+const int PUNCH_IN2 = A0;
+
+// SERVO
+const int servoPin = A2;
+
+bool shooting = false;
+unsigned long shootTimer = 0;
+
+// ENCODER ISR
+void encoderISR() {
+  if (digitalRead(encoderB)) encoderCount++;
+  else encoderCount--;
+}
+
+void setup() {
+
+  Serial.begin(115200);
+
+  // LCD
+  lcd.begin(16, 2);
+
+  // Servo
+  turretServo.attach(servoPin);
+  turretServo.write(90);
+
+  // Encoder
+  pinMode(encoderA, INPUT);
+  pinMode(encoderB, INPUT);
+  attachInterrupt(digitalPinToInterrupt(encoderA), encoderISR, RISING);
+
+  // Motors
+  pinMode(ENA, OUTPUT);
+  pinMode(ENB, OUTPUT);
+  pinMode(IN1, OUTPUT);
+  pinMode(IN2, OUTPUT);
+  pinMode(IN3, OUTPUT);
+  pinMode(IN4, OUTPUT);
+
+  pinMode(TURRET_EN, OUTPUT);
+  pinMode(TURRET_IN1, OUTPUT);
+  pinMode(TURRET_IN2, OUTPUT);
+
+  pinMode(PUNCH_EN, OUTPUT);
+  pinMode(PUNCH_IN1, OUTPUT);
+  pinMode(PUNCH_IN2, OUTPUT);
+}
+
+void loop() {
+
+  if (Serial.available()) {
+
+    String data = Serial.readStringUntil('\n');
+
+    int p1 = data.indexOf(',');
+    int p2 = data.indexOf(',', p1 + 1);
+    int p3 = data.indexOf(',', p2 + 1);
+    int p4 = data.indexOf(',', p3 + 1);
+
+    int drive = data.substring(0, p1).toInt();
+    int turn = data.substring(p1 + 1, p2).toInt();
+    int turret = data.substring(p2 + 1, p3).toInt();
+    int servoPos = data.substring(p3 + 1, p4).toInt();
+    int shoot = data.substring(p4 + 1).toInt();
+
+    driveTank(drive, turn);
+    rotateTurret(turret);
+    turretServo.write(servoPos);
+
+    if (shoot == 1 && !shooting) firePuncher();
+  }
+
+  updatePuncher();
+  updateLCD();
+}
+
+// DRIVE
+void driveTank(int drive, int turn) {
+  int left = constrain(drive + turn, -255, 255);
+  int right = constrain(drive - turn, -255, 255);
+
+  setMotor(ENA, IN1, IN2, left);
+  setMotor(ENB, IN3, IN4, right);
+}
+
+// TURRET MOTOR
+void rotateTurret(int speed) {
+  setMotor(TURRET_EN, TURRET_IN1, TURRET_IN2, speed);
+}
+
+// MOTOR FUNCTION
+void setMotor(int en, int in1, int in2, int speed) {
+
+  int pwm = abs(speed);
+  pwm = constrain(pwm, 0, 255);
+
+  analogWrite(en, pwm);
+
+  if (speed > 15) {
+    digitalWrite(in1, HIGH);
+    digitalWrite(in2, LOW);
+  } else if (speed < -15) {
+    digitalWrite(in1, LOW);
+    digitalWrite(in2, HIGH);
+  } else {
+    digitalWrite(in1, LOW);
+    digitalWrite(in2, LOW);
+    analogWrite(en, 0);
+  }
+}
+
+// PUNCHER
+void firePuncher() {
+  shooting = true;
+  shootTimer = millis();
+
+  analogWrite(PUNCH_EN, 255);
+  digitalWrite(PUNCH_IN1, HIGH);
+  digitalWrite(PUNCH_IN2, LOW);
+}
+
+void updatePuncher() {
+
+  if (shooting) {
+    if (millis() - shootTimer > 500) {
+      digitalWrite(PUNCH_IN1, LOW);
+      digitalWrite(PUNCH_IN2, HIGH);
+    }
+    if (millis() - shootTimer > 1000) {
+      digitalWrite(PUNCH_IN1, LOW);
+      digitalWrite(PUNCH_IN2, LOW);
+      analogWrite(PUNCH_EN, 0);
+      shooting = false;
+    }
+  }
+}
+
+// LCD
+void updateLCD() {
+  lcd.setCursor(0,0);
+  lcd.print("Enc: ");
+  lcd.print(encoderCount);
+  lcd.print("    ");
+}
