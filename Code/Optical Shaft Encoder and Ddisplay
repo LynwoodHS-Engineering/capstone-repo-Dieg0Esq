@@ -1,0 +1,69 @@
+Encoder Wire	      Uno Pin
+5V	                  5V
+GND	                 GND
+Channel A	          Pin 2
+Channel B	          Pin 6
+
+
+LCD Pin	            Uno Pin
+VSS	                  GND
+VDD	                  5V
+VO (contrast)	      Middle pin of 10k potentiometer
+RS	                  12
+RW	                  GND
+E	                    11
+D4	                  10
+D5	                  9
+D6	                  8
+D7	                  7
+A (backlight +)	      5V (through 220Ω resistor)
+K (backlight -)	      GND
+
+
+#include <LiquidCrystal.h>
+
+// LCD: RS, E, D4, D5, D6, D7
+LiquidCrystal lcd(12, 11, 10, 9, 8, 7);
+
+// Encoder pins
+const int encoderA = 2;
+const int encoderB = 6;
+
+volatile long encoderCount = 0;
+
+void encoderISR() {
+  if (digitalRead(encoderB) == HIGH) {
+    encoderCount++;
+  } else {
+    encoderCount--;
+  }
+}
+
+void setup() {
+
+  lcd.begin(16, 2);
+
+  pinMode(encoderA, INPUT);
+  pinMode(encoderB, INPUT);
+
+  attachInterrupt(digitalPinToInterrupt(encoderA), encoderISR, RISING);
+
+  lcd.setCursor(0, 0);
+  lcd.print("Encoder Ready");
+
+  delay(1000);
+}
+
+void loop() {
+
+  lcd.setCursor(0, 0);
+  lcd.print("Count:        ");  // clears old text
+
+  lcd.setCursor(7, 0);
+  lcd.print(encoderCount);
+
+  lcd.setCursor(0, 1);
+  lcd.print("Running...   ");
+
+  delay(150);
+}
