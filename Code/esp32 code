@@ -1,0 +1,59 @@
+#include <Bluepad32.h>
+
+ControllerPtr ctl;
+
+void onConnectedController(ControllerPtr c) {
+  ctl = c;
+  Serial.println("CONTROLLER CONNECTED");
+}
+
+void onDisconnectedController(ControllerPtr c) {
+  ctl = nullptr;
+  Serial.println("DISCONNECTED");
+}
+
+void setup() {
+  Serial.begin(115200);
+  Serial2.begin(115200, SERIAL_8N1, 16, 17);
+
+  BP32.setup(&onConnectedController, &onDisconnectedController);
+  Serial.println("READY");
+}
+
+void loop() {
+
+  BP32.update();
+
+  if (ctl && ctl->isConnected()) {
+
+    int forward = ctl->throttle();
+    int reverse = ctl->brake();
+    int turn = ctl->axisRX();
+
+    int turret = ctl->axisX();
+    int servoMove = ctl->axisY();
+
+    bool shoot = ctl->circle();
+
+    forward = map(forward, 0, 1023, 0, 255);
+    reverse = map(reverse, 0, 1023, 0, 255);
+
+    turn = map(turn, -512, 512, -255, 255);
+    turret = map(turret, -512, 512, -255, 255);
+    servoMove = map(servoMove, -512, 512, 30, 150);
+
+    int drive = forward - reverse;
+
+    Serial2.print(drive);
+    Serial2.print(",");
+    Serial2.print(turn);
+    Serial2.print(",");
+    Serial2.print(turret);
+    Serial2.print(",");
+    Serial2.print(servoMove);
+    Serial2.print(",");
+    Serial2.println(shoot);
+  }
+
+  delay(15);
+}
