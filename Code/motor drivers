@@ -1,0 +1,267 @@
+L298N #1 Drivetrain
+
+Function	Pin
+ENA	       9
+IN1	       8
+IN2	       7
+IN3	       5
+IN4	       4
+ENB	       3
+
+
+L298N #2 Turret and Puncher
+
+Function	Pin
+ENA	       10
+IN1	       11
+IN2	       12
+IN3	       13
+IN4	       A0
+ENB	       A1
+
+
+
+Controls
+PS5                       Control	Function
+R2	                          Forward
+L2	                          Reverse
+Right Joystick X	        Turn left/right
+Left Joystick X	           Rotate turret
+Circle	                   Fire puncher
+
+
+
+
+arduino code
+
+// ===============================
+// DRIVETRAIN L298N
+// ===============================
+
+const int ENA = 9;
+const int IN1 = 8;
+const int IN2 = 7;
+
+const int IN3 = 5;
+const int IN4 = 4;
+const int ENB = 3;
+
+
+// ===============================
+// TURRET + PUNCHER L298N
+// ===============================
+
+const int TURRET_EN = 10;
+const int TURRET_IN1 = 11;
+const int TURRET_IN2 = 12;
+
+const int PUNCH_EN = A1;
+const int PUNCH_IN1 = 13;
+const int PUNCH_IN2 = A0;
+
+
+// ===============================
+// PUNCHER VARIABLES
+// ===============================
+
+bool shooting = false;
+unsigned long shootTimer = 0;
+
+
+// ===============================
+// SETUP
+// ===============================
+
+void setup() {
+
+  Serial.begin(115200);
+
+  // Drive motors
+  pinMode(ENA, OUTPUT);
+  pinMode(ENB, OUTPUT);
+
+  pinMode(IN1, OUTPUT);
+  pinMode(IN2, OUTPUT);
+
+  pinMode(IN3, OUTPUT);
+  pinMode(IN4, OUTPUT);
+
+  // Turret motor
+  pinMode(TURRET_EN, OUTPUT);
+
+  pinMode(TURRET_IN1, OUTPUT);
+  pinMode(TURRET_IN2, OUTPUT);
+
+  // Puncher motor
+  pinMode(PUNCH_EN, OUTPUT);
+
+  pinMode(PUNCH_IN1, OUTPUT);
+  pinMode(PUNCH_IN2, OUTPUT);
+
+  stopAll();
+}
+
+
+// ===============================
+// LOOP
+// ===============================
+
+void loop() {
+
+  // Example testing
+
+  // Forward
+  driveTank(200, 0);
+  delay(2000);
+
+  // Backward
+  driveTank(-200, 0);
+  delay(2000);
+
+  // Stop
+  driveTank(0, 0);
+  delay(1000);
+
+  // Turret right
+  rotateTurret(200);
+  delay(1000);
+
+  // Turret left
+  rotateTurret(-200);
+  delay(1000);
+
+  // Stop turret
+  rotateTurret(0);
+  delay(1000);
+
+  // Shoot
+  firePuncher();
+
+  while (shooting) {
+    updatePuncher();
+  }
+
+  delay(2000);
+}
+
+
+// ===============================
+// DRIVETRAIN CONTROL
+// ===============================
+
+void driveTank(int drive, int turn) {
+
+  int leftSpeed = constrain(drive + turn, -255, 255);
+
+  int rightSpeed = constrain(drive - turn, -255, 255);
+
+  setMotor(ENA, IN1, IN2, leftSpeed);
+
+  setMotor(ENB, IN3, IN4, rightSpeed);
+}
+
+
+// ===============================
+// TURRET CONTROL
+// ===============================
+
+void rotateTurret(int speed) {
+
+  setMotor(TURRET_EN,
+           TURRET_IN1,
+           TURRET_IN2,
+           speed);
+}
+
+
+// ===============================
+// PUNCHER CONTROL
+// ===============================
+
+void firePuncher() {
+
+  shooting = true;
+
+  shootTimer = millis();
+
+  analogWrite(PUNCH_EN, 255);
+
+  digitalWrite(PUNCH_IN1, HIGH);
+  digitalWrite(PUNCH_IN2, LOW);
+}
+
+
+void updatePuncher() {
+
+  if (shooting) {
+
+    // Fire forward
+    if (millis() - shootTimer > 500) {
+
+      digitalWrite(PUNCH_IN1, LOW);
+      digitalWrite(PUNCH_IN2, HIGH);
+    }
+
+    // Return back
+    if (millis() - shootTimer > 1000) {
+
+      digitalWrite(PUNCH_IN1, LOW);
+      digitalWrite(PUNCH_IN2, LOW);
+
+      analogWrite(PUNCH_EN, 0);
+
+      shooting = false;
+    }
+  }
+}
+
+
+// ===============================
+// MOTOR FUNCTION
+// ===============================
+
+void setMotor(int en,
+              int in1,
+              int in2,
+              int speed) {
+
+  int pwm = abs(speed);
+
+  pwm = constrain(pwm, 0, 255);
+
+  analogWrite(en, pwm);
+
+  if (speed > 15) {
+
+    digitalWrite(in1, HIGH);
+    digitalWrite(in2, LOW);
+  }
+
+  else if (speed < -15) {
+
+    digitalWrite(in1, LOW);
+    digitalWrite(in2, HIGH);
+  }
+
+  else {
+
+    digitalWrite(in1, LOW);
+    digitalWrite(in2, LOW);
+
+    analogWrite(en, 0);
+  }
+}
+
+
+// ===============================
+// STOP EVERYTHING
+// ===============================
+
+void stopAll() {
+
+  analogWrite(ENA, 0);
+  analogWrite(ENB, 0);
+
+  analogWrite(TURRET_EN, 0);
+  analogWrite(PUNCH_EN, 0);
+}
