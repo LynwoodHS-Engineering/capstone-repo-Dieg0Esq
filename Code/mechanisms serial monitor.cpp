@@ -1,8 +1,5 @@
-# Serial Monitor for all mechanisms
-
-
 // ======================================
-// FINAL ROBOT TANK CONTROL CODE
+// FINAL ROBOT TANK CONTROL CODE USING SERIAL MONITOR
 // ======================================
 
 // ------------------------------
