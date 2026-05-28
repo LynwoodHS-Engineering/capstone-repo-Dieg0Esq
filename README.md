@@ -1,4 +1,4 @@
-## 🛡️ EDD-Capstone - PS5 Robot Tank
+# 🛡️ EDD-Capstone - PS5 Robot Tank
 **Members:** Diego Esquivel, Ulices Ayala, Aldo Torres  
 ** May 28th, 2026 **
 
