@@ -1,42 +1,47 @@
-# EDD-Capstone
-
-
-
-
-## 🛡️ RC Tank Project
-
-This project is a remote-controlled tank that integrates five different engineering elements into one system. Our goal was to build a functional tank with a working turret that looks and moves like the real thing.
-
-
+## 🛡️ EDD-Capstone - PS5 Robot Tank
+**Author:** Diego Esquivel  
+**Date:** May 28th, 2026
 
 ## 🚀 Project Overview
+This project is a remote-controlled robot tank controlled wirelessly using a **PS5 DualSense Controller**. The tank features a functional drivetrain, a rotating turret, and a puncher mechanism. It also displays real-time RPM feedback on an LCD screen.
 
-The main goal of this project was to design an RC tank that is easy to control and runs smoothly. We focused on making sure the turret was fully functional and that the whole system worked together using both manual controls and automatic sensors.
-
-
+The main goal was to create a responsive, smooth, and fun-to-control tank using modern wireless technology.
 
 ## 🛠️ Requirements & How We Met Them
 
 For this project, we had to include at least one element from five specific categories. Here is how we implemented each one:
 
-Logic, Processing & Control: We used an Arduino Uno and an ESP32 as the "brains" to handle all the code and signals.
+- **Logic, Processing & Control**: Used an **ESP32-WROOM** and **Arduino Uno R3** working together. The ESP32 handles Bluetooth communication and logic, while the Arduino controls all motors.
+  
+- **Manual User Input**: **PS5 DualSense Controller** — full wireless control using triggers, joysticks, and buttons.
 
-Manual User Input: We used a Remote Control to drive the tank and aim the turret.
+- **Actuators & Hardware**: Two **L298N Motor Drivers** powering multiple DC motors for the drivetrain, turret rotation, and puncher mechanism.
 
-Actuators & Hardware: We used 393 Motors for the tank's movement and RC Servo Motors to move the turret precisely.
+- **Automatic Sensors**: **Rotary Encoder** used to measure and display real-time **RPM** of the drivetrain on the LCD screen.
 
-Automatic Sensors: We integrated an Accelerometer to help the system track movement and tilt.
-
-Output Display: We used an LED Screen and LEDs to show the tank's status and provide visual feedback.
+- **Output Display**: **16x2 LCD Screen** shows live RPM feedback to the user.
 
 ## 🏗️ How It Works
-
-We designed the tank to be responsive and fun to drive. The ESP32 handles the wireless communication while the Arduino manages the motors and sensors. By combining the 393 motors for power and servos for precision, we were able to create a scale model that mimics a real-life tank's functionality.
+The **ESP32-WROOM** connects to the PS5 controller via Bluetooth using the Bluepad32 library. It reads all controller inputs and sends simple serial commands to the **Arduino Uno**. The Arduino then controls the motors through the L298N drivers. An encoder on the ESP32 calculates the RPM and displays it on the LCD.
 
 ## Key Features
+- **Wireless PS5 Control**: Smooth driving with R2/L2 triggers and joysticks
+- **Functional Turret**: Rotates left and right using the left joystick
+- **Puncher Mechanism**: Activated by the Circle button
+- **Real-time RPM Display**: Live feedback on LCD screen
+- **Strong Turning**: Full power differential drive for realistic tank movement
 
-Functional Turret: Uses servos so you can aim and rotate just like a real tank.
+## 📦 Main Components
+- ESP32-WROOM
+- Arduino Uno R3
+- PS5 DualSense Controller
+- 2x L298N Motor Driver Modules
+- 16x2 LCD Display
+- Rotary Encoder
+- Tank chassis with DC motors
+- Puncher mechanism
 
-Dual-Controller Setup: Using both an Arduino and an ESP32 lets us handle more tasks at once.
+---
 
-Real-time Feedback: The LED screen lets the user know exactly what the tank is doing.
+**Project Complete**  
+Diego Esquivel - May 28th, 2026
