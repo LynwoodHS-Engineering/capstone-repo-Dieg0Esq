@@ -47,6 +47,8 @@ The **ESP32-WROOM** connects to the PS5 controller via Bluetooth using the Bluep
 - Tank chassis with (2) VEX 2-Wire Motors 393
 - Puncher mechanism with a VEx 2-Wire Motor 393
 
+<img width="1000" height="1726" alt="20260527_184121 (1)" src="https://github.com/user-attachments/assets/f111799b-381b-4ecd-aa77-98f18946e4c5" />
+
 ---
 
 ## Lessons Learned 🤔
