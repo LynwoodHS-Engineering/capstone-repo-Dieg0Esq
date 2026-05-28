@@ -33,7 +33,7 @@ void setup() {
   pinMode(IN7, OUTPUT); pinMode(IN8, OUTPUT);
   
   stopAll();
-  Serial.println("=== ROBOT READY - Turret Speed Adjusted ===");
+  Serial.println("=== ROBOT READY - Strong Turning ===");
 }
 
 // ======================================
@@ -48,39 +48,43 @@ void loop() {
     if (cmd == 'F' || cmd == 'f') {
       digitalWrite(IN1, HIGH); digitalWrite(IN2, LOW);
       digitalWrite(IN3, HIGH); digitalWrite(IN4, LOW);
-      analogWrite(ENA1, 220); analogWrite(ENB1, 220);
+      analogWrite(ENA1, 230);
+      analogWrite(ENB1, 230);
     }
     else if (cmd == 'B' || cmd == 'b') {
       digitalWrite(IN1, LOW); digitalWrite(IN2, HIGH);
       digitalWrite(IN3, LOW); digitalWrite(IN4, HIGH);
-      analogWrite(ENA1, 220); analogWrite(ENB1, 220);
+      analogWrite(ENA1, 230);
+      analogWrite(ENB1, 230);
     }
     else if (cmd == 'L' || cmd == 'l') {
-      digitalWrite(IN1, HIGH); digitalWrite(IN2, LOW);
-      digitalWrite(IN3, LOW);  digitalWrite(IN4, HIGH);
-      analogWrite(ENA1, 220); analogWrite(ENB1, 220);
+      Serial.println("LEFT TURN - Strong");
+      digitalWrite(IN1, HIGH); digitalWrite(IN2, LOW);   // Left motor forward
+      digitalWrite(IN3, LOW);  digitalWrite(IN4, HIGH);  // Right motor backward
+      analogWrite(ENA1, 255);   // ← Full power for turning
+      analogWrite(ENB1, 255);
     }
     else if (cmd == 'R' || cmd == 'r') {
-      digitalWrite(IN1, LOW);  digitalWrite(IN2, HIGH);
-      digitalWrite(IN3, HIGH); digitalWrite(IN4, LOW);
-      analogWrite(ENA1, 220); analogWrite(ENB1, 220);
+      Serial.println("RIGHT TURN - Strong");
+      digitalWrite(IN1, LOW);  digitalWrite(IN2, HIGH);  // Left motor backward
+      digitalWrite(IN3, HIGH); digitalWrite(IN4, LOW);   // Right motor forward
+      analogWrite(ENA1, 255);   // ← Full power for turning
+      analogWrite(ENB1, 255);
     }
     else if (cmd == 'S' || cmd == 's') {
       stopDrivetrain();
     }
 
-    // ==================== TURRET (Faster) ====================
+    // ==================== TURRET ====================
     else if (cmd == 'Q' || cmd == 'q') {
-      Serial.println("TURRET LEFT");
       digitalWrite(IN5, LOW);
       digitalWrite(IN6, HIGH);
-      analogWrite(ENA2, 170);     // ← Increased speed
+      analogWrite(ENA2, 170);
     }
     else if (cmd == 'E' || cmd == 'e') {
-      Serial.println("TURRET RIGHT");
       digitalWrite(IN5, HIGH);
       digitalWrite(IN6, LOW);
-      analogWrite(ENA2, 170);     // ← Increased speed
+      analogWrite(ENA2, 170);
     }
     else if (cmd == 'T' || cmd == 't') {
       digitalWrite(IN5, LOW);
