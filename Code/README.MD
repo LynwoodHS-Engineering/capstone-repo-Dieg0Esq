@@ -12,8 +12,8 @@ It uses an **ESP32-WROOM** for Bluetooth communication and an **Arduino Uno R3**
 |-----------------------------|--------|
 | **esp32-wroom code.cpp**    | Main code for ESP32 (PS5 controller + RPM display + Serial commands) |
 | **Arduino Uno Code.cpp**    | Main code for Arduino Uno (Motor control: Drivetrain, Turret, Puncher) |
-| arduino_serial_test.ino     | Old serial communication test |
-| esp32_serial_test.ino       | Old serial communication test |
+| arduino_serial_test.ino     | serial communication test |
+| esp32_serial_test.ino       | serial communication test |
 | README.MD                   | This file |
 
 ---
