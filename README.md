@@ -44,3 +44,42 @@ The **ESP32-WROOM** connects to the PS5 controller via Bluetooth using the Bluep
 - VEX Rotary Encoder
 - Tank chassis with (2) VEX 2-Wire Motors 393
 - Puncher mechanism with a VEx 2-Wire Motor 393
+
+---
+
+## Lessons Learned 🤔
+
+1. **PS5 Controller Pairing**  
+   Problem: Initial pairing was very unstable.  
+   Solution: Switched from `ps5-esp32` library to **Bluepad32** — much more reliable.
+
+2. **Turret Stopping**  
+   Problem: Turret kept moving even when joystick was centered.  
+   Solution: Added explicit stop command (`'T'`) and timing logic.
+
+3. **Turning Power**  
+   Problem: Tank turned too slowly and struggled.  
+   Solution: Used full PWM (255) during turns with proper differential drive.
+
+**Recommendation:** Always test motor power separately from logic power.
+
+---
+
+## Instructions ❗ (How to Build & Run)
+
+1. Install ESP32 + Bluepad32 boards in Arduino IDE (see detailed README).
+2. Upload `esp32-wroom code.cpp` to the ESP32 (select Bluepad32 board).
+3. Upload `Arduino Uno Code.cpp` to the Arduino Uno.
+4. Connect ESP32 and Arduino via Serial (GPIO17→Pin0, GPIO16→Pin1).
+5. Connect LCD and Encoder to ESP32 as defined in code.
+6. Wire both L298N drivers to Arduino according to pin definitions.
+7. Power motors with separate battery (7.4V–12V recommended).
+8. Hold **PS + Create** on PS5 controller to connect.
+9. Test controls:
+   - R2 = Forward
+   - L2 = Backward
+   - Right Joystick = Turn
+   - Left Joystick = Turret
+   - Circle = Punch
+
+---
