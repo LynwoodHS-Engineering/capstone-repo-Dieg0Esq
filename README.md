@@ -1,6 +1,9 @@
 ## 🛡️ EDD-Capstone - PS5 Robot Tank
-**Author:** Diego Esquivel  
-**Date:** May 28th, 2026
+**Members:** Diego Esquivel, Ulices Ayala, Aldo Torres  
+** May 28th, 2026 **
+
+<img width="2252" height="1813" alt="20260527_184037" src="https://github.com/user-attachments/assets/271c7a8d-e547-482c-8a06-6f9c6da4eebe" />
+
 
 ## 🚀 Project Overview
 This project is a remote-controlled robot tank controlled wirelessly using a **PS5 DualSense Controller**. The tank features a functional drivetrain, a rotating turret, and a puncher mechanism. It also displays real-time RPM feedback on an LCD screen.
