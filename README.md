@@ -87,3 +87,6 @@ The **ESP32-WROOM** connects to the PS5 controller via Bluetooth using the Bluep
    - Circle = Punch
 
 ---
+
+
+<img width="1797" height="1181" alt="Screenshot 2026-05-28 091017" src="https://github.com/user-attachments/assets/81ae5eb4-d5b1-492b-8736-22ec74460688" />
