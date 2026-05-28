@@ -41,11 +41,6 @@ The **ESP32-WROOM** connects to the PS5 controller via Bluetooth using the Bluep
 - PS5 DualSense Controller
 - 2x L298N Motor Driver Modules
 - 16x2 LCD Display
-- Rotary Encoder
-- Tank chassis with DC motors
-- Puncher mechanism
-
----
-
-**Project Complete**  
-Diego Esquivel - May 28th, 2026
+- VEX Rotary Encoder
+- Tank chassis with (2) VEX 2-Wire Motors 393
+- Puncher mechanism with a VEx 2-Wire Motor 393
