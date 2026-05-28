@@ -1,36 +1,25 @@
-# PS5 Controller Robot Tank
+# PS5 Controller Robot Tank 
 
-A remote-controlled robot tank using a PS5 DualSense controller, ESP32-WROOM, and Arduino Uno R3.
-
-## 📋 Project Overview
-
-This project allows full wireless control of a robot tank using a PS5 controller:
-- **R2** → Forward
-- **L2** → Backward
-- **Right Joystick** → Turn Left / Right
-- **Left Joystick** → Turret Left / Right
-- **Circle Button** → Punch / Fire mechanism
-
-Real-time RPM display on LCD screen.
+## Project Description
+This robot tank is controlled wirelessly using a **PS5 DualSense Controller**.  
+It uses an **ESP32-WROOM** for Bluetooth communication and an **Arduino Uno R3** for motor control. Real-time RPM is displayed on an LCD screen.
 
 ---
 
-## 🛠 Hardware Used
+## 📁 Files in this Folder
 
-- **ESP32-WROOM** (Main Bluetooth + Controller)
-- **Arduino Uno R3** (Motor Control)
-- **PS5 DualSense Controller** (MAC: `58:10:31:21:65:D7`)
-- **L298N Motor Driver** (×2)
-- **16x2 LCD Display**
-- **Rotary Encoder** (for RPM feedback)
-- Power supply for motors (recommended separate from logic)
+| File Name                    | Purpose |
+|-----------------------------|--------|
+| **esp32-wroom code.cpp**    | Main code for ESP32 (PS5 controller + RPM display + Serial commands) |
+| **Arduino Uno Code.cpp**    | Main code for Arduino Uno (Motor control: Drivetrain, Turret, Puncher) |
+| arduino_serial_test.ino     | Old serial communication test |
+| esp32_serial_test.ino       | Old serial communication test |
+| README.MD                   | This file |
 
 ---
 
-## 📦 Required Libraries & Boards
+## Required Setup
 
-### 1. ESP32 Board
-- **Board Package**: ESP32 by Espressif Systems (latest)
-- **Bluepad32 Board**: ESP32 + Bluepad32 by Ricardo Quesada
-
-**Additional Board URL:**
+### 1. ESP32 Board & Library
+- **Board**: `ESP32 Dev Module (Bluepad32)`
+- **Additional Board URL**:
