@@ -39,6 +39,7 @@ The **ESP32-WROOM** connects to the PS5 controller via Bluetooth using the Bluep
 - ESP32-WROOM
 - Arduino Uno R3
 - PS5 DualSense Controller
+- VEX 7.2 Battery
 - 2x L298N Motor Driver Modules
 - 16x2 LCD Display
 - VEX Rotary Encoder
